@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <title>Login</title>
+</head>
+<body class="bg-gradient-to-r from-orange-400 to-yellow-300 min-h-screen flex items-center justify-center">
+  <form action="dashboard.html" class="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl transition-all duration-300 hover:shadow-orange-400" data-aos="fade-right">
+    <h1 class="text-4xl font-extrabold text-center text-orange-600 mb-8">Login</h1>
+
+    <div class="mb-6">
+      <label for="name" class="block text-lg font-semibold text-gray-700 mb-2">Name</label>
+      <input type="text" id="name" name="name" required
+        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition duration-200" />
+    </div>
+
+    <div class="mb-8">
+      <label for="password" class="block text-lg font-semibold text-gray-700 mb-2">Password</label>
+      <input type="password" id="password" name="password" required
+        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition duration-200" />
+    </div>
+
+    <div class="text-center">
+      <button type="submit"
+        class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg hover:bg-orange-600 transition duration-300" onclick="saveName(event)">
+        Login
+      </button>
+    </div>
+    <div class="text-center mt-4">
+        <p>Don't have account??  <a href="index.html" class="text-blue-500 hover:underline">SignUp</a></p>
+    </div>
+  </form>
+  <script>
+  function saveName(event) {
+    event.preventDefault();
+    const name = document.getElementById('name').value;
+    const password = document.getElementById('password').value;
+
+    fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.message === 'Login successful') {
+        localStorage.setItem('username', name);
+        window.location.href = 'dashboard.html';
+      } else {
+        alert(data.message);
+      }
+    });
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+</body>
+</html>
